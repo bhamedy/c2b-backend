@@ -22,11 +22,11 @@ public interface TransactionsRepository extends JpaRepository<Transactions, Long
 
     List<TransactionBasicDTO> findTop3ByUserIDOrderByTransactionDateDesc(Long userId);
 
-    @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId ORDER BY t.date DESC")
-    List<TransactionBasicDTO> findByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT t FROM Transaction t WHERE t.cashier.id = :userId")
-    List<TransactionBasicDTO> findByCashierId(@Param("userId") Long userId);
+//    @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId ORDER BY t.date DESC")
+//    List<TransactionBasicDTO> findByUserId(@Param("userId") Long userId);
+//
+//    @Query("SELECT t FROM Transaction t WHERE t.cashier.id = :userId")
+//    List<TransactionBasicDTO> findByCashierId(@Param("userId") Long userId);
 
 
 
