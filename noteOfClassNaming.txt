@@ -1,0 +1,52 @@
+In Spring Boot, you can set the naming strategy for Hibernate by configuring properties in `application.properties` or `application.yml`. This configuration allows you to specify how Hibernate translates Java entity field names to database column names.
+
+### Step 1: Choose a Naming Strategy
+
+Hibernate offers several naming strategies. Here are the commonly used ones:
+
+1. **Physical Naming Strategy**: Controls the actual physical column and table names as they are represented in the database.
+   - `org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl`: Uses your Java field names exactly as they are without any conversion.
+   - `org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy`: Converts camelCase field names to snake_case column names.
+
+2. **Implicit Naming Strategy**: Controls naming when a name is not explicitly specified in the `@Table` or `@Column` annotations.
+   - `org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl`: Uses JPA-compliant implicit naming rules.
+   - `org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy`: Converts camelCase to snake_case if names aren’t explicitly specified.
+
+### Step 2: Set the Naming Strategy in `application.properties`
+
+You can configure the naming strategy in `application.properties` as follows:
+
+```properties
+# Use Spring's physical naming strategy, which converts camelCase to snake_case
+spring.jpa.hibernate.naming.physical-strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+# Use Spring's implicit naming strategy, which also converts camelCase to snake_case by default
+spring.jpa.hibernate.naming.implicit-strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+```
+
+### Example Naming Strategy Configurations
+
+#### To Use CamelCase as-is
+
+If you want Hibernate to use your field names exactly as they are in Java, set the physical naming strategy to `PhysicalNamingStrategyStandardImpl`:
+
+```properties
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+```
+
+This will prevent Hibernate from converting camelCase to snake_case.
+
+#### To Convert CamelCase to Snake_Case Automatically
+
+If you prefer camelCase in Java and want Hibernate to convert these to snake_case in the database, use Spring’s `SpringPhysicalNamingStrategy`:
+
+```properties
+spring.jpa.hibernate.naming.physical-strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+spring.jpa.hibernate.naming.implicit-strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+```
+
+### Step 3: Verify Naming Strategy Changes
+
+After updating the configuration, restart your Spring Boot application. Hibernate will apply the specified naming strategy when mapping your entities to the database.
+
+**Note**: Setting the naming strategy does not alter existing database schema names; it only affects how Hibernate interprets Java field names in relation to database columns. If you already have a schema with snake_case columns, using `SpringPhysicalNamingStrategy` is often the best choice as it will map camelCase fields to snake_case columns automatically.
